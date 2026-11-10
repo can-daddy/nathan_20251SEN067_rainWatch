@@ -4,7 +4,7 @@
 | | |
 |---|---|
 | **Student** | Shema Can Daddy Nathan |
-| **Student ID** | [STUDENT_ID] |
+| **Student ID** | 20251SEN067 |
 | **Course** | INSY 8311 – Database Development with PL/SQL (Final Exam, Capstone Project) |
 | **Instructor** | Eric Maniraguha |
 | **University** | Adventist University of Central Africa (AUCA) |
@@ -58,7 +58,7 @@ Forecasting and early-warning projects already exist. But the public sources I f
 
 **Honest note about data quality:** ERA5 is a *model estimate*, not a rain-gauge reading. Studies in East Africa report a wet bias over complex terrain (Nakulopa et al., 2022) and weak skill on extreme rain (Bagiliko et al., 2025). For this reason RainWatch is a **risk-screening tool**, thresholds are stored in a table so they can be edited, and every reading keeps a `DATA_SOURCE` column so another source (such as CHIRPS) can be added later.
 
-## 5. Innovation (8 marks)
+## 5. Innovation
 
 - **Option:** Smart automation (scheduler and alerts)
 - **Tools:** Oracle `DBMS_SCHEDULER` (nightly job) + a **Streamlit** app in Python (`python-oracledb`) connected to the real Oracle database
