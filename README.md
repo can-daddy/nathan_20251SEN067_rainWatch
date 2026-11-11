@@ -41,7 +41,7 @@ Forecasting and early-warning projects already exist. But the public sources I f
 2. Calculate risk levels with PL/SQL functions, using thresholds taken from each district's own rainfall history.
 3. Create alerts automatically with a scheduled job, and manage the full alert life cycle with procedures and triggers.
 4. Keep an audit log of every change and give officers a simple Streamlit app to view and update alerts.
-5. Test the system on a past flood event (2–3 May 2023) to check that it would have raised high-risk alerts.
+5. Test the system on a past flood event (2–3 May 2023) and report how the event days rank in each district's own rainfall history.
 
 ## 4. Data source
 
@@ -57,6 +57,11 @@ Forecasting and early-warning projects already exist. But the public sources I f
 **Districts chosen (planned):** Rubavu, Nyabihu, Ngororero, Karongi, Rutsiro, Nyamasheke (Western Province, hit in May 2023), plus Musanze, Gakenke, Burera, and Kigali districts (Gasabo, Kicukiro, Nyarugenge).
 
 **Honest note about data quality:** ERA5 is a *model estimate*, not a rain-gauge reading. Studies in East Africa report a wet bias over complex terrain (Nakulopa et al., 2022) and weak skill on extreme rain (Bagiliko et al., 2025). For this reason RainWatch is a **risk-screening tool**, thresholds are stored in a table so they can be edited, and every reading keeps a `DATA_SOURCE` column so another source (such as CHIRPS) can be added later.
+
+**First test result:** for Rubavu, the data gave 12.3 mm (1 May), 11.0 mm (2 May) and 26.0 mm (3 May 2023), much lower than the 110–130 mm reported by the national meteorological agency on 3 May. This is expected: ERA5 averages rain over a grid cell about 25–31 km wide, while the reported value is from a point, and gridded products tend to underestimate the intensity of heavy rain (Bagiliko et al., 2025; Nakulopa et al., 2022). So RainWatch does **not** depend on absolute millimetres. It ranks each day against the district's own history from the same data source.
+
+**Ranking test (Rubavu, history 2014–2023):** the 95th percentile of daily rain is 25.5 mm and the 99th is 38.1 mm. The 26.0 mm of 3 May 2023 ranks at the 95.3rd percentile (3-day total 49.3 mm, 88.4th percentile). With the planned rule, RainWatch would raise a MEDIUM alert on that day, not HIGH. This is reported honestly: gridded data smooths heavy storms. The other five Western districts will be tested the same way.
+
 
 ## 5. Innovation
 
@@ -110,7 +115,7 @@ Forecasting and early-warning projects already exist. But the public sources I f
 - A working Oracle database with real rainfall data loaded and validated.
 - Alerts created automatically by the nightly job.
 - A live Streamlit demonstration of the full alert life cycle.
-- A back-test on 2–3 May 2023 for the six Western districts, showing whether HIGH alerts appear on or before the event.
+- A back-test on 2–3 May 2023 for the six Western districts, reporting whether the event days rank in the top percentiles of each district's history and whether alerts appear on or before the event. The result will be reported honestly, even if some districts show no alert.
 - Reports: response time, ignored alerts and history by district.
 
 ## 10. Limitations
@@ -118,6 +123,7 @@ Forecasting and early-warning projects already exist. But the public sources I f
 - Rainfall is modelled data, not gauge data, and is weakest for extreme rain.
 - Alerts and officer actions are created by the system and by demonstration users, because no public dataset of real responses exists.
 - The system supports officers; it is not an official flood forecast.
+- Future work: correct the bias with local gauge data, or add blended products such as CHIRPS or ENACTS-Rwanda (Siebert et al., 2019), if access is available.
 
 ## 11. Project phases
 
@@ -150,7 +156,7 @@ Forecasting and early-warning projects already exist. But the public sources I f
 
 Bagiliko, J., Stern, D., Ndanguza, D., & Torgbor, F. F. (2025). *Validation of satellite and reanalysis rainfall products against rain gauge observations in Ghana and Zambia* (arXiv:2501.14829). https://arxiv.org/abs/2501.14829
 
-Gleixner, S., Demissie, T., & Diro, G. T. (2020). Did ERA5 improve temperature and precipitation reanalysis over East Africa? *Atmosphere, 11*(9). https://hdl.handle.net/10568/109557
+Gleixner, S., Demissie, T., & Diro, G. T. (2020). Did ERA5 improve temperature and precipitation reanalysis over East Africa? *Atmosphere, 11*(9), 996. https://doi.org/10.3390/atmos11090996
 
 Global Facility for Disaster Reduction and Recovery. (n.d.). *Rwanda: Building resilience to flood hazards in Northwest Rwanda through improved national and local capacity*. https://www.gfdrr.org/en/rwanda-building-resilience-flood-hazards-northwest-rwanda-through-improved-national-and-local
 
@@ -158,7 +164,7 @@ Hersbach, H., Bell, B., Berrisford, P., Hirahara, S., Horányi, A., Muñoz-Sabat
 
 International Federation of Red Cross and Red Crescent Societies. (n.d.). *Rwanda: Floods and landslides – DREF final report (MDRRW022)*. ReliefWeb. https://reliefweb.int/report/rwanda/rwanda-floods-and-landslides-dref-final-report-mdrrw022
 
-Nakulopa, F., et al. (2022). Evaluation of high-resolution precipitation products over the Rwenzori Mountains. *Journal of Hydrometeorology*. https://doi.org/10.1175/JHM-D-21-0106.1
+Nakulopa, F., Vanderkelen, I., Van de Walle, J., Van Lipzig, N. P. M., Tabari, H., Jacobs, L., Tweheyo, C., Dewitte, O., & Thiery, W. (2022). Evaluation of high-resolution precipitation products over the Rwenzori Mountains (Uganda). *Journal of Hydrometeorology, 23*. https://doi.org/10.1175/JHM-D-21-0106.1
 
 Open-Meteo. (n.d.). *Historical weather API*. https://open-meteo.com/en/docs/historical-weather-api
 
